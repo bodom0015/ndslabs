@@ -15,6 +15,8 @@ angular
   $scope.storageQuota = (Project.project.storageQuote || '50' );
   $scope.newStackVolumeRequirements = [];
   
+  $scope.forms = {};
+  
   $scope.discoverVolumeReqs = function(stack) {
     var reusableVolumes = [];
     var requiredVolumes = [];
@@ -89,10 +91,7 @@ angular
         prev: null,
         canPrev: false,
         canNext: function() {
-          return $scope.newStack && $scope.newStack.name !== '' 
-                    && !_.find(configuredStacks, function(stack) { 
-                      return stack.name === $scope.newStack.name;
-                    });
+          return $scope.forms['stackNameForm'].$valid;
         },
         next: function() { 
           if ($scope.newStackOptions.length > 0) {
