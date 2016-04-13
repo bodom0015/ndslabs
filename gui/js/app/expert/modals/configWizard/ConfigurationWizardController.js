@@ -15,6 +15,8 @@ angular
   $scope.storageQuota = (Project.project.storageQuote || '50' );
   $scope.newStackVolumeRequirements = [];
   
+  $scope.forms = {};
+  
   $scope.discoverVolumeReqs = function(stack) {
     var reusableVolumes = [];
     var requiredVolumes = [];
@@ -89,10 +91,7 @@ angular
         prev: null,
         canPrev: false,
         canNext: function() {
-          return $scope.newStack && $scope.newStack.name !== '' 
-                    && !_.find(configuredStacks, function(stack) { 
-                      return stack.name === $scope.newStack.name;
-                    });
+          return $scope.forms['stackNameForm'].$valid;
         },
         next: function() { 
           if ($scope.newStackOptions.length > 0) {
@@ -226,32 +225,16 @@ angular
         },
         canPrev: true,
         canNext: function() {
-          var used = $filter('usedStorage')(configuredVolumes);
-          if (used == $scope.storageQuota) {
-            // No room for any new volumes
-            return false;
-          }
-      
-          // Don't count orphaned volumes in our requested total (they are already part of "used")
-          var diff = _.differenceBy($scope.newStackVolumeRequirements, configuredVolumes, 'id');
-          var requested = $filter('usedStorage')(diff);
-          var available = $scope.storageQuota - used;
-          if (requested > available) {
-            return false;
-          }
-          
-          var volumeParamsSet = true;
-          angular.forEach($scope.newStackVolumeRequirements, function(volume) {
-            // Check that all of our required parameters have been set
-              if (!volume.id && !volume.name) {
-                volumeParamsSet = false;
-                return;
-              } else if (!volume.size || !volume.sizeUnit) {
-                volumeParamsSet = false;
-                return;
-              }
+          var valid = true;
+          angular.forEach($scope.newStackVolumeRequirements, function(vol) {
+            var key = vol.service + 'VolumeCreateForm';
+            var form = $scope.forms[key];
+            if (!form || form.$invalid) {
+              valid = false;
+            }
           });
-          return volumeParamsSet;
+          
+          return valid;
         },
         next: 'confirm',
         onNext: function() {
@@ -327,6 +310,7 @@ angular
   $scope.project = Project.project;
   $scope.storageQuota = Project.storageQuota || 50;
   $scope.configuredVolumes = configuredVolumes;
+  $scope.configuredStacks = configuredStacks;
   
   // TODO: Where is this email address going to live?
   var adminEmail = 'site-admin';

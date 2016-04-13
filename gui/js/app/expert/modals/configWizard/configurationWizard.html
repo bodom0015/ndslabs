@@ -48,22 +48,22 @@
           
           <div class="row">
             <div class="col-sm-12">
-              <form name="stackNameForm" novalidate>
+              <form name="forms.stackNameForm" novalidate>
                 <div class="form-group" 
-                ng-class="{ 'has-error has-feedback':stackNameForm.stackName.$invalid, 'has-success has-feedback': !stackNameForm.stackName.$pristine && stackNameForm.stackName.$valid }">
-                  <label class="control-label" for="stackNameInput">Choose a unique name for your stack</label>
-                  <input type="text" name="stackName" class="form-control" minlength="1" maxlength="20" required
-                      ng-model="newStack.name" placeholder="Name" id="stackNameInput">
-                  <span class="form-control-feedback glyphicon" ng-if="!stackNameForm.stackName.$pristine"
-                  ng-class="{ 'glyphicon-remove': stackNameForm.stackName.$invalid, 'glyphicon-ok': stackNameForm.stackName.$valid }"></span>
+                ng-class="{ 'has-error has-feedback':forms.stackNameForm.stackName.$invalid, 'has-success has-feedback': !forms.stackNameForm.stackName.$pristine && forms.stackNameForm.stackName.$valid }">
+                  <label class="control-label" for="stackName">Choose a unique name for your stack</label>
+                  <input type="text" name="stackName" class="form-control" required unique="configuredStacks"
+                      ng-model="newStack.name" placeholder="Enter a unique name for this stack" id="stackName">
+                  <span class="form-control-feedback glyphicon" 
+                  ng-class="{ 'glyphicon-remove': forms.stackNameForm.stackName.$invalid, 'glyphicon-ok': !forms.stackNameForm.stackName.$pristine && forms.stackNameForm.stackName.$valid }"></span>
                   
-                  <div ng-messages="stackNameForm.stackName.$error" role="alert" class="text-danger">
+                  <div ng-messages="forms.stackNameForm.stackName.$error" role="alert" class="alert-danger">
                     <div ng-message="required">You must name this stack before continuing.</div>
-                    <div ng-message="minlength">You must name this stack before continuing.</div>
-                    <div ng-message="maxlength">Stack name can be at most 20 characters long.</div>
+                    <div ng-message="unique">A stack with this name already exists.</div>
                   </div>
                 </div>
               </form>
+              <pre>{{ forms.stackNameForm | json }}</pre>
             </div>
           </div>
         </div>
@@ -266,25 +266,24 @@
               <!-- Create a New Volume -->
               <div class="row">
                 <div class="col-sm-12">
-                  <form name="volumeCreateForm" class="form-horizontal" ng-show="volume.id === ''" novalidate>
+                  <form name="forms.{{ volume.service }}VolumeCreateForm" class="form-horizontal" ng-show="volume.id === ''" novalidate>
                     <!-- Volume Name -->
                     <div class="col-sm-8">
-                      <div class="form-group"  ng-class="{ 'has-error has-feedback': !volumeCreateForm.volumeName.$pristine && volumeCreateForm.volumeName.$invalid, 'has-success has-feedback':  !volumeCreateForm.volumeName.$pristine && volumeCreateForm.volumeName.$valid }">
+                      <div class="form-group"  ng-class="{ 'has-error has-feedback': forms[volume.service + 'VolumeCreateForm'].volumeName.$invalid, 'has-success has-feedback':  !forms[volume.service + 'VolumeCreateForm'].volumeName.$pristine && forms[volume.service + 'VolumeCreateForm'].volumeName.$valid }">
                         <label class="control-label" for="volumeName">Name</label>
-                        <input id="volumeName" type="text" name="volumeName" class="form-control" required maxlength="20"
-                             placeholder="Enter a name for this volume" ng-model="volume.name" />
-                        <span class="form-control-feedback glyphicon"  aria-hidden="true" ng-if="!volumeCreateForm.volumeName.$pristine"
-                          ng-class="{ 'glyphicon-remove': volumeCreateForm.volumeName.$invalid, 'glyphicon-ok': volumeCreateForm.volumeName.$valid }"></span>
+                        <input id="volumeName" type="text" name="volumeName" class="form-control" required unique="configuredVolumes;newStackVolumeRequirements"
+                             placeholder="Enter a unique name for this volume" ng-model="volume.name" />
+                        <span class="form-control-feedback glyphicon"  aria-hidden="true" ng-if="!forms[volume.service + 'VolumeCreateForm'].volumeName.$pristine"
+                          ng-class="{ 'glyphicon-remove': forms[volume.service + 'VolumeCreateForm'].volumeName.$invalid, 'glyphicon-ok': forms[volume.service + 'VolumeCreateForm'].volumeName.$valid }"></span>
                           
-                        <div ng-messages="volumeCreateForm.volumeName.$error" role="alert" class="alert-danger">
+                        <div ng-messages="forms[volume.service + 'VolumeCreateForm'].volumeName.$error" role="alert" class="alert-danger">
                           <div ng-message="required">You must name this volume before continuing.</div>
-                          <div ng-message="minlength">You must name this volume before continuing.</div>
-                          <div ng-message="maxlength">Volume name can be at most 20 characters long.</div>
+                          <div ng-message="unique">A volume with this name already exists.</div>
                         </div>
                       </div><!-- /form-group -->
                     </div><!-- /col-sm-8 -->
                     <div class="col-sm-4">
-                      <div class="form-group" ng-class="{ 'has-error': !volumeCreateForm.volumeSize.$pristine && volumeCreateForm.volumeSize.$invalid, 'has-success': !volumeCreateForm.volumeSize.$pristine && volumeCreateForm.volumeSize.$valid }">
+                      <div class="form-group" ng-class="{ 'has-error': forms.volumeCreateForm.volumeSize.$invalid, 'has-success': !forms.volumeCreateForm.volumeSize.$pristine && forms.volumeCreateForm.volumeSize.$valid }">
                         <label class="control-label" for="volumeSize">Size</label>
                         <div class="input-group">
                           <input id="volumeSize" type="number" name="volumeSize" min="1" class="form-control" ng-model="volume.size" required
@@ -299,7 +298,7 @@
                             </ul>
                           </div><!-- /btn-group -->
                         </div><!-- /input-group -->
-                        <div ng-messages="volumeCreateForm.volumeSize.$error" class="alert-danger">
+                        <div ng-messages="forms.volumeCreateForm.volumeSize.$error" class="alert-danger">
                           <div ng-message="required">Enter a size.</div>
                           <div ng-message="max">Not enough space.</div>
                         </div>
