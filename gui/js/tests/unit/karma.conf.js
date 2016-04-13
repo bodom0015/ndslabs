@@ -4,11 +4,23 @@ module.exports = function(config){
     basePath : './',
 
     files : [
-      '../../app/bower_components/angular/angular.js',
-      '../../app/bower_components/angular-route/angular-route.js',
-      '../../app/bower_components/angular-mocks/angular-mocks.js',
-      '../../app/components/**/*.js',
-      '../../app/view*/**/*.js'
+      '../../bower_components/angular/angular.js',
+      '../../bower_components/angular-mocks/angular-mocks.js',
+      '../../bower_components/angular-route/angular-route.js',
+      '../../bower_components/angular-resource/angular-resource.js',
+      '../../bower_components/angular-cookies/angular-cookies.js',
+      '../../bower_components/angular-messages/angular-messages.js',
+      '../../bower_components/angular-animate/angular-animate.js',
+      '../../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+      '../../bower_components/angular-gage/dist/angular-gage.min.js',
+      '../../bower_components/angular-bootstrap-pwgen/angular-bootstrap-pwgen.js',
+      '../../bower_components/angular-alert/angular-alert.js',
+      '../../bower_components/angular-wizard/angular-wizard.js',
+      '../../bower_components/angular-grid/angular-grid.js',
+      '../../app/shared/**/*.js',
+      '../../app/app.js',
+      '../../app/expert/**/*.js',
+      '../../app/login/**/*.js'
     ],
 
     autoWatch : true,
