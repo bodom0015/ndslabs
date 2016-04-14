@@ -21,7 +21,8 @@ module.exports = function(config){
       '../../app/shared/**/*.js',
       '../../app/app.js',
       '../../app/expert/**/*.js',
-      '../../app/login/**/*.js'
+      '../../app/login/**/*.js',
+      '../../tests/unit/scenarios.js'
     ],
 
     autoWatch : true,
