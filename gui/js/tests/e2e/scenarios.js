@@ -1,40 +1,49 @@
+/* global angular:false */
 'use strict';
 
 /* https://github.com/angular/protractor/blob/master/docs/toc.md */
 
-describe('my app', function() {
-  it('should automatically redirect to /view1 when location hash/fragment is empty', function() {
-    browser.get('index.html');
-    expect(browser.getLocationAbsUrl()).toMatch("/view1");
+describe('ndslabs', function() {
+  var $httpBackend;
+  var ApiHost, ApiPort;
+
+  beforeEach(function() {
+    //$httpBackend = _$httpBackend_;
+    browser.addMockModule('NdsLabsApi', function() {
+      angular.module('NdsLabsApi', ['ngMockE2E'])
+      .run(function($httpBackend, ApiHost, ApiPort, _) {
+        var projects = [];
+        var services = [];
+        var stacks = [];
+        var volumes = [];
+
+        $httpBackend.whenGET('http://' + ApiHost + ':' + ApiPort + '/version').respond('1.0-test');
+        //$httpBackend.whenPOST('http://' + ApiHost + ':' + ApiPort + '/projects/.*').respond(_.find(projects, [ 'namespace', ]));
+        //$httpBackend.whenPOST('http://' + ApiHost + ':' + ApiPort + '/authenticate').respond(200);
+        $httpBackend.whenGET(/.+/).passThrough();
+      })
+    });
   });
 
+  /*afterEach(function() {
+    mock.verifyNoOutstandingExpectation();
+    mock.verifyNoOutstandingRequest();
+  });*/
 
-  describe('view1', function() {
-
-    beforeEach(function() {
-      browser.get('index.html#/view1');
-    });
-
-
-    it('should render view1 when user navigates to /view1', function() {
-      expect(element.all(by.css('[ng-view] p')).first().getText()).
-        toMatch(/partial for view 1/);
-    });
-
+  it('should automatically redirect to /login without a valid session', function() {
+    browser.get('/');
+    expect(browser.getLocationAbsUrl()).toMatch("/login");
+    expect(browser.getTitle()).toMatch("NDS Labs");
   });
 
-
-  describe('view2', function() {
-
+  describe('login', function() {
     beforeEach(function() {
-      browser.get('index.html#/view2');
+      browser.get('#/login');
+      expect(browser.getLocationAbsUrl()).toMatch("/login");
     });
 
-
-    it('should render view2 when user navigates to /view2', function() {
-      expect(element.all(by.css('[ng-view] p')).first().getText()).
-        toMatch(/partial for view 2/);
+    it('should render login form when user navigates to /login', function() {
+      expect(element(by.id('loginForm')).isPresent()).toBe(true);
     });
-
   });
 });

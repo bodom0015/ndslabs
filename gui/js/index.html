@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html ng-app="ndslabs">
+﻿<!DOCTYPE html>
+<html>
   <head>
     <title>NDS Labs</title>
     
@@ -31,8 +31,8 @@
     <script type="text/javascript" src="/bower_components/lodash/dist/lodash.min.js"></script>
 
     <!-- AngularJS -->
-    <script src="/bower_components/angular/angular.min.js"></script>
-    <script src="/bower_components/angular-mocks/angular-mocks.min.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-mocks/angular-mocks.js"></script>
     <script src="/bower_components/angular-route/angular-route.min.js"></script>
     <script src="/bower_components/angular-resource/angular-resource.min.js"></script>
     <script src="/bower_components/angular-animate/angular-animate.min.js"></script>
@@ -80,7 +80,7 @@
   </head>
 
   <!-- Display the actual contents of the app down here -->
-  <body>
+  <body ng-app="ndslabs">
     <!-- This syntax can be used to isolate smaller page templates (such as our navbar and footer) -->
     <!-- NOTE: This method does not produce a navigatable route. For another full page/route, we need to add the route to app.js -->
     <div ng-include src="'/app/shared/navbar/navbar.html'" ng-controller="NavbarController"></div> 

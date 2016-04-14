@@ -22,7 +22,7 @@ module.exports = function(config){
       '../../app/app.js',
       '../../app/expert/**/*.js',
       '../../app/login/**/*.js',
-      '../../tests/unit/scenarios.js'
+      'scenarios.js'
     ],
 
     autoWatch : true,

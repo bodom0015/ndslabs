@@ -2,18 +2,33 @@ exports.config = {
   allScriptsTimeout: 11000,
 
   specs: [
-    '*.js'
+    'scenarios.js'
   ],
 
-  capabilities: {
+  multiCapabilities: [
+  /*{
+    'browserName': 'phantomjs'
+  },
+  {
+    'browserName': 'safari'
+  },*/
+   {
     'browserName': 'chrome'
   },
+  {
+    'browserName': 'firefox'
+  }], 
 
-  baseUrl: 'http://localhost:8000/app/',
+  rootElement: 'body',
 
-  framework: 'jasmine',
+  baseUrl: 'http://localhost:8000',
+
+  framework: 'jasmine2',
 
   jasmineNodeOpts: {
+    isVerbose: true,
+    showColors: true,
+    includeStackTrace: true,
     defaultTimeoutInterval: 30000
   }
 };
