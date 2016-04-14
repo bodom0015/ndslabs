@@ -1,49 +1,110 @@
 'use strict';
 
 describe('ndslabs module', function() {
+	var testUser = 'test', testPassword = '123456';
+  var ApiHost, ApiPort;
 
-	var testUser = 'test';
-	var testPassword = '123456';
-
-  beforeEach(module('ndslabs'),  inject(function(_$value_) {
-	$value = _$value_;
+  beforeEach(module('ndslabs'), inject(function($injector) {
+    ApiHost = $injector.get('ApiHost');
+    ApiPort = $injector.get('ApiPort');
   }));
+
+  afterEach(function() {
+    //$httpBackend.verifyNoOutstandingExpectation();
+    //$httpBackend.verifyNoOutstandingRequest();
+  });
 
   //beforeEach(angular.mock.http.init);
   //afterEach(angular.mock.http.reset);
 
-  describe('Api', function () {
-    it('should define ApiHost', inject(function ($controller) {
-    	expect($value('ApiHost')).toBeDefined();
+  describe('Test Harness', function () {
+    it('should define Username', inject(function () {
+      expect(testUser).toBe('test');
     }));
-    it('should define ApiPort', inject(function ($controller) {
-    	expect($value('ApiPort')).toBe(30001);
+    it('should define Password', inject(function () {
+      expect(testPassword).toBe('123456');
+    }));
+    it('should define ApiHost', inject(function (ApiHost) {
+    	expect(ApiHost).toBe('192.168.99.100');
+    }));
+    it('should define ApiPort', inject(function (ApiPort) {
+    	expect(ApiPort).toBe('30001');
     }));
   });
 
   describe('LoginController', function () {
-	beforeEach(inject(function(_$controller_, _$httpBackend_) {
-	  $controller = _$controller_;
-	  $scope = {};
-	  $httpBackend = _$httpBackend_;
+    var $controller, $httpBackend, scope;
+    var authRequestHandler, createController;
 
-	  ApiHost = $value('ApiHost');
-	  ApiPort = $value('ApiPort');
+    var server;
 
-      // Note that this HTTP backend is ngMockE2E's, and will make a real HTTP request
-	  $httpBackend.whenGET('http://' + ApiHost + ':' + ApiPort + '/authenticate').respond(function() {
-	  	return $scope.settings.namespace === testUser && $scope.settings.password === testPassword;
-	  });
-	}));
+    beforeEach(inject(function($injector) {
+      $controller = $injector.get('$controller');
+      $httpBackend = $injector.get('$httpBackend');
+      scope = $injector.get('$rootScope');
 
-    it('should allow valid login', inject(function ($controller) {
-      $controller('LoginController', { $scope: $scope }); 
+      $controller('LoginController', {'$scope' : scope });
+    }));
 
-      $scope.settings.namespace = testUser;
-      $scope.settings.password = testPassword;
+    it('should not allow login on invalid user', inject(function ($controller, $httpBackend, ApiHost, ApiPort) {
+      // Populate scope with a mock LoginController
+      expect(scope).toBeDefined();
+      $controller('LoginController', { $scope: scope }); 
 
-      $scope.login();
-      expect($scope.progressMessage).toBe('Please wait...');
+      scope.settings.namespace = testUser + 'x';
+      scope.settings.password = testPassword;
+
+      $httpBackend.expect('POST', 'http://' + ApiHost + ':' + ApiPort + '/authenticate').respond(401, '');
+
+      scope.login();
+      expect(scope.progressMessage).toBe('Please wait...');
+
+
+      $httpBackend.expect('GET', '/app/login/login.html').respond(200);
+      $httpBackend.flush();
+      expect(scope.errorMessage).toBe('Invalid username or password');
+      expect(scope.progressMessage).toBe('');
+    }));
+
+    it('should not allow login on invalid password', inject(function ($controller, $httpBackend, ApiHost, ApiPort) {
+      // Populate scope with a mock LoginController
+      expect(scope).toBeDefined();
+      $controller('LoginController', { $scope: scope }); 
+
+      scope.settings.namespace = testUser
+      scope.settings.password = testPassword + 'x';
+
+      $httpBackend.expect('POST','http://' + ApiHost + ':' + ApiPort + '/authenticate').respond(401, '');
+
+      scope.login();
+      expect(scope.progressMessage).toBe('Please wait...');
+
+      // TODO: Why does this happen??
+      $httpBackend.expect('GET', '/app/login/login.html').respond(200);
+      $httpBackend.flush();
+
+      expect(scope.errorMessage).toBe('Invalid username or password');
+      expect(scope.progressMessage).toBe('');
+    }));
+
+    it('should allow login for valid credentials', inject(function ($controller, $httpBackend, ApiHost, ApiPort) {
+      // Populate scope with a mock LoginController
+      expect(scope).toBeDefined();
+      $controller('LoginController', { $scope: scope }); 
+
+      scope.settings.namespace = testUser;
+      scope.settings.password = testPassword;
+
+      $httpBackend.expect('POST', 'http://' + ApiHost + ':' + ApiPort + '/authenticate').respond(200, '');
+
+      scope.login();
+      expect(scope.progressMessage).toBe('Please wait...');
+
+      $httpBackend.expect('GET', '/app/login/login.html').respond(200);
+      $httpBackend.flush();
+
+      expect(scope.errorMessage).toBe('');
+      expect(scope.progressMessage).toBe('');
     }));
   });
 });
