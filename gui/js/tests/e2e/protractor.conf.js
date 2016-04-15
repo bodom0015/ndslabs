@@ -1,9 +1,7 @@
 exports.config = {
   allScriptsTimeout: 11000,
 
-  specs: [
-    'scenarios.js'
-  ],
+  specs: [ 'scenarios.js' ], 
 
   multiCapabilities: [
   /*{
@@ -12,10 +10,10 @@ exports.config = {
   {
     'browserName': 'safari'
   },
-   {
+  {
     'browserName': 'chrome'
   },*/
-  {
+   {
     'browserName': 'firefox'
   }], 
 
@@ -24,6 +22,10 @@ exports.config = {
   baseUrl: 'http://localhost:8000',
 
   framework: 'jasmine2',
+
+  onPrepare: function() {
+    browser.driver.get(browser.baseUrl);
+  },
 
   jasmineNodeOpts: {
     isVerbose: true,
