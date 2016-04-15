@@ -3,6 +3,7 @@
 var angular = require('angular');
 var MockProjects = require('./projects.mock.js');
 var MockServices = require('./services.mock.js');
+
 browser.addMockModule('NdsLabsApi', function() {
   angular.module('NdsLabsApi', [ 'ngMockE2E' ]).run(function($log, $httpBackend, _) {
     var projects = MockProjects;
