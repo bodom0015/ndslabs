@@ -277,12 +277,17 @@ angular.module('ndslabs-services', [ 'ndslabs-api' ])
      * Populate all shared data from the server into our scope
      */
     populateAll: function(projectId) {
-      return $q.all([
-        Specs.populate(),
-        Project.populate(projectId),
-        Stacks.populate(projectId),
-        Volumes.populate(projectId)
-      ]);
+      var deferred = $q.defer();
+      
+      Specs.populate().then(function() {
+        deferred = $q.all([
+          Project.populate(projectId),
+          Stacks.populate(projectId),
+          Volumes.populate(projectId)
+        ]);
+      });
+      
+      return deferred.promise;
     },
     specs: Specs,
     stacks: Stacks,
