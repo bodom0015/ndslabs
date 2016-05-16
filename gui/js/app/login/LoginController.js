@@ -38,6 +38,7 @@ angular
       $scope.errorMessage = '';
       $cookies.put('namespace', $scope.settings.namespace);
       $log.debug("Logged in!");
+      debugger;
       $location.path(HomeRoute);
     }, function(response) {
       var body = response.body || { 'Error': 'Something went wrong. Is the server running?' };

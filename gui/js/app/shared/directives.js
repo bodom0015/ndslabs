@@ -2,8 +2,8 @@
 
 angular.module('ndslabs-directives', [])
 
-.directive('terminal', [ '$log', '$window', '$timeout', '$location', 'AuthInfo', 'ApiUri', 'NdsLabsApi',
-        function($log, $window, $timeout, $location, AuthInfo, ApiUri, NdsLabsApi) {
+.directive('terminal', [ '$log', '$window', '$timeout', '$location', 'AuthInfo', 'WsUri', 'NdsLabsApi',
+        function($log, $window, $timeout, $location, AuthInfo, WsUri, NdsLabsApi) {
     return {
         restrict: 'E',
         scope: {
@@ -22,7 +22,7 @@ angular.module('ndslabs-directives', [])
                 screenKeys: true
             });
             
-            var target = "ws://" + ApiUri + "/console?namespace=" + AuthInfo.get().namespace + "&ssid=" + scope.service;
+            var target = "ws://" + WsUri.websocketFull + "/console?namespace=" + AuthInfo.get().namespace + "&ssid=" + scope.service;
             var ws = new WebSocket(target);
 
             ws.onclose = function() {
