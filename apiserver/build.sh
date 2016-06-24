@@ -26,20 +26,20 @@ if [ "$1" = "build" ] || [ -z $1 ]; then
 elif [ "$1" = "dev" ]; then
 	echo Building dev image
 	docker build -t ndslabs/apiserver:dev .
-	echo Pushing dev image
-	docker push ndslabs/apiserver:dev
+#	echo Pushing dev image
+#	docker push ndslabs/apiserver:dev
 elif [ "$1" = "test" ]; then
 	echo Building test image
 	docker build -t ndslabs/apiserver:test .
-	echo Pushing test image
-	docker push ndslabs/apiserver:test
+#	echo Pushing test image
+#	docker push ndslabs/apiserver:test
 elif [ "$1" = "release" ]; then
 	echo Building release image
 	docker build -t ndslabs/apiserver:latest .
 	docker build -t ndslabs/apiserver:$VERSION .
-	echo Pushing release image
-	docker push ndslabs/apiserver:latest
-	docker push ndslabs/apiserver:$VERSION
+#	echo Pushing release image
+#	docker push ndslabs/apiserver:latest
+#	docker push ndslabs/apiserver:$VERSION
 elif [ "$1" = "clean" ]; then
 	echo Cleaning
 	rm -rf build
