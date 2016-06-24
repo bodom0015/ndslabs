@@ -20,7 +20,7 @@ if [ "$1" = "build" ] || [ -z $1 ]; then
 	#GOARCH=amd64
 	#go build -o build/bin/$APP-darwin-amd64
 	echo Building Linux
-	docker run --rm -v `pwd`:/go/src/github.com/ndslabs/apiserver -v `pwd`/build/bin:/go/bin -v `pwd`/build/pkg:/go/pkg -v `pwd`/gobuild.sh:/gobuild.sh golang:1.5  /gobuild.sh
+	docker run --rm -v `pwd`:/go/src/github.com/ndslabs/apiserver -v `pwd`/build/bin:/go/bin -v `pwd`/build/pkg:/go/pkg -v `pwd`/gobuild.sh:/gobuild.sh golang:1.5 -u root /gobuild.sh
 
 elif [ "$1" = "dev" ]; then
 	echo Building dev image
