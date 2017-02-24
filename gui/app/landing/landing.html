@@ -1,4 +1,4 @@
-<!-- The "Contact Us" View -->
+<!-- The "Landing Page" View -->
 <section style="margin: 10px;">
   <div ng-if="user && token" class="alert" role="alert" ng-class="{ 'alert-success': verified === true, 'alert-info': verified === null, 'alert-danger': verified === false }">
     <i class="fa fa-fw" ng-class="{ 'fa-spinner fa-spin': verified === null, 'fa-times-circle-o': verified === false, 'fa-check-circle-o': verified === true }"></i>
@@ -35,6 +35,8 @@
         </div>
       </div>
     </div>
+    
+    <pre>The drop-in is working!</pre>
     
     <!-- Sign In Panel -->
     <div class="col-sm-5" ng-if="!auth.token">
