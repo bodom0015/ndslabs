@@ -13,7 +13,7 @@ var EC = protractor.ExpectedConditions;
 
 var TEST_HELP_LINK_TARGET = /https\:\/\/nationaldataservice\.atlassian\.net\/wiki\/display\/NDSC\/.+/;
 
-var specKey = 'cloud9cpp';
+var specKey = 'cloudcmd';
 var cloneKey = 'clonedspec';
 
 var TIMEOUT_EXPECT_NEW_TAB = 30000;
@@ -68,10 +68,18 @@ describe('Labs Workbench Catalog View', function() {
   });
   
   it('should offer main services that we expect to see', function() {
-    expectSpec('toolmanager');
-    expectSpec('cloud9cpp');
-    expectSpec('clowder');
-    expectSpec('dataverse');
+    expectSpec('cloudcmd');
+    expectSpec('chords');
+    expectSpec('gdddev');
+    expectSpec('jupytermn');
+    expectSpec('influx');
+    expectSpec('mongo');
+    expectSpec('mysql');
+    expectSpec('ontosoft');
+    expectSpec('postgres');
+    expectSpec('rstudio');
+    expectSpec('suave');
+
     
     // TODO: How to scroll to expected cards
   });
@@ -119,7 +127,7 @@ describe('Labs Workbench Catalog View', function() {
   
   describe('As Cards', function() {
     it('should allow the user to install an application', function() {
-      catalogPage.installApplication('toolmanager').then(function() {
+      catalogPage.installApplication(specKey).then(function() {
         dashboardPage.get(true);
         dashboardPage.shutdownAndRemoveAllApplications();
       });

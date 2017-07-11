@@ -20,6 +20,7 @@ var LandingPage = function() {
   this.catalogLink = element(by.id('catalogLink'));
   this.catalogAddLink = element(by.id('catalogAddLink'));
   
+  this.homeLink = element(by.id('homeLink'));
   this.apiLink = element(by.id('apiLink'));
   this.contactUsLink = element(by.id('contactUsLink'));
   
@@ -75,6 +76,15 @@ LandingPage.prototype.clickCatalogAddLink = function() {
   "use strict";
 
   return this.catalogAddLink.click();
+};
+
+LandingPage.prototype.clickHomeLink = function(predicate) {
+  "use strict";
+
+  var context = this;
+  return helpers.scrollToAndThen(0,10000, function () {
+    context.homeLink.click();
+  }).then(predicate);
 };
 
 LandingPage.prototype.clickApiLink = function(predicate) {

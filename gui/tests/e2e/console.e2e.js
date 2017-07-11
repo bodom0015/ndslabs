@@ -16,7 +16,7 @@ var WAIT_TIME_APPLICATION_SHUTDOWN = 120000;
 
 var TEST_CONSOLE_CMD = 'ls -al /home/$NAMESPACE';
 
-var TEST_SPEC_KEY = 'toolmanager';
+var TEST_SPEC_KEY = 'cloudcmd';
 
 // dashboard.e2e.js
 describe('Labs Workbench Application Service Console View', function() {

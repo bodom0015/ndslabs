@@ -76,17 +76,11 @@ describe('Labs Workbench Landing Page View', function() {
       done();
     });
   }, TIMEOUT_EXPECT_NEW_TAB);
-  
-  it('should link to the Developer\'s Guide wiki page', function(done) {
-    landingPage.clickHelpLink(3);
-    helpers.expectNewTabOpen(shared.config.DEV_GUIDE_LINK).then(function() {
-      done();
-    });
-  }, TIMEOUT_EXPECT_NEW_TAB);
-  
-  it('should link to the Acceptable Use Policy wiki page', function(done) {
-    landingPage.clickHelpLink(4);
-    helpers.expectNewTabOpen(shared.config.USE_POLICY_LINK).then(function() {
+
+  it('should link to the earthcube home page', function() {
+    navbar.expandHelpDropdown();
+    navbar.clickHomeLink();
+    helpers.expectNewTabOpen('https://earthcube.org').then(function() {
       done();
     });
   }, TIMEOUT_EXPECT_NEW_TAB);

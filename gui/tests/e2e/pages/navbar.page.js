@@ -11,6 +11,7 @@ var Navbar = function() {
   // Account dropdown (always visible)
   this.helpDropdown = element(by.id('helpDropdown'));
   this.helpLink = function(index) {  return element(by.id('helpLink' + index + 'Nav')); };
+  this.homeLinkNav = element(by.id('homeLinkNav'));
   this.apiReferenceNav = element(by.id('apiNav'));
   this.contactUsNav = element(by.id('contactUsNav'));
 
@@ -45,6 +46,10 @@ Navbar.prototype.clickHelpLink = function(index) {
   "use strict";
 
   this.helpLink(index).click();
+};
+
+Navbar.prototype.clickHomeLinkNav = function() {
+  this.homeLinkNav.click();
 };
 
 Navbar.prototype.clickApiReferenceNav = function() {  
