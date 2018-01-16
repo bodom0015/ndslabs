@@ -19,6 +19,8 @@ const secureCookie = process.env.API_SECURE || true;
 const cookieDomain = '.' + (process.env.DOMAIN || 'local.ndslabs.org');
 const cookieOpts = { domain: cookieDomain, path: '/', secure: secureCookie };
 
+const shadowAccountPassword = new Buffer("change_this_in_production").toString('base64');
+
 // Declare a new express app
 const app = express();
 
@@ -199,6 +201,41 @@ app.post('/cauth/login', bodyParser.urlencoded({ extended: false }), function (r
       }
     }
   });
+});
+
+/**
+ *  Serves as the upstream callback when using the oauth2-proxy.
+ *
+ *  NOTE: You must set this container as the upstream for the OAuth2 Proxy's 
+ *      startup command flags for this endpoint to receive the callback.
+ *      
+ *  When hit with the correct oauth2 parameters, this endpoint will:
+ *    * Look up the user by e-mail - if no user with this e-mail exists, then one will be created
+ *    * Attach this user's namespace to the response as a cookie
+ *    * Authenticate as this user - attach the resulting JWT to the response as a cookie
+ * 
+ */
+app.get('/oauth2/', function(req, res) {
+  console.log("Callback hit!");
+  console.log("Request Parameters:", req.params);
+  console.log("Request Headers:", req.headers);
+  const { spawn } = require('child_process');
+  
+  // New API endpoint? maybe these need to happen in the apiserver?
+  // FIXME: idempotent creation of accounts?
+  // TODO: create shadow account - how to bypass approval via API? 
+  //     ndslabsctl? embed admin password? (discouraged until internal 
+  //     cluster network traffic is encrypted)
+  // TODO: set shadow account namespace in headers
+  // TODO: create and return JWT in headers - how to authenticate shadow account?
+  // TODO: what to do about conflicts? e.g. attempting to create a shadow 
+  //    with account username "abcd" that already exists in etcd... maybe we
+  //    can avoid ties by generating a garbage account name, but that won't
+  //    look nice in the UI
+  // (see test.js for a hacky workaround to all of the above)
+  
+  // Return "I'm a teapot" just for fun
+  res.sendStatus(418);
 });
 
 // Serve our static login page
