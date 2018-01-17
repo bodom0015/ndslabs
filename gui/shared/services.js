@@ -67,7 +67,8 @@ angular.module('ndslabs-services', [ 'ndslabs-api' ])
         var cc = _.find(stack.services, [ 'service', quickstartKey ]);
         var ep = _.head(cc.endpoints);
         if (ep) {
-          Popup.open($filter('externalHostPort')(ep));
+          var url = $filter('externalHostPort')(ep);
+          Popup.open(url, "quickstart");
         }
       },
       launch: function() {
