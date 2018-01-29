@@ -38,8 +38,12 @@ if (apiPath) { apiBase += apiPath }
 app.use(compression());
 
 // Configure HTTP parser middleware (only log HTTP errors)
-app.use(morgan('combined', {
-  skip: function (req, res) { return res.statusCode < 400 }
+app.use(morgan('dev', {
+  skip: function (req, res) { return res.statusCode < 400 }, stream: process.stderr
+}));
+
+app.use(morgan('dev', {
+  skip: function (req, res) { return res.statusCode >= 400 }, stream: process.stdout
 }));
 
 // Configure bodyParser middleware
@@ -77,7 +81,12 @@ app.use(bodyParser.json());
 
 const logger = new (winston.Logger)({
   transports: [
-    new (winston.transports.Console)({ level: 'warn' }),
+    new (winston.transports.Console)({ 
+      level: process.env.LOG_LEVEL || 'debug',
+      timestamp: function () {
+          return (new Date()).toISOString();
+      },
+    }),
     
     // TODO: Log to file if we ever find a reason to do so
     /*new (winston.transports.File)({
@@ -86,7 +95,7 @@ const logger = new (winston.Logger)({
     })*/
   ],
   exitOnError: false,
-  emitErrs: false
+  emitErrs: true
 });
 
 // POST /logs => Echo logs to server console
@@ -148,6 +157,7 @@ app.get('/healthz', function(req, res){
 /** CAuth endpoints/paths here */
 
 // Simple auth endpoint
+// FIXME: Feature envy with apiserver
 app.post('/cauth/login', bodyParser.urlencoded({ extended: false }), function (req, res) {
   
   // Pull username/password from POST body
@@ -228,7 +238,7 @@ app.get('/cauth/auth', function(req, res) {
      // if request starts with an arbitrary host (e.g. not 'www.'), 
      //    we need to check authorization
     checkHost = requestedUrl.replace(/https?:\/\//, '').replace(/\/.*$/, '');
-    console.log(`Checking token's access to ${checkHost}`);
+    logger.log("debug", `Checking token's access to ${checkHost}`);
   }
 
   // If token was given, check that it's valid
@@ -263,7 +273,7 @@ app.get('/cauth/auth', function(req, res) {
     resp.on('data', (chunk) => { rawData += chunk; });
     resp.on('end', () => {
       try {
-        console.log(rawData);
+        //logger.log('debug', rawData);
         res.sendStatus(200);
       } catch (e) {
         console.error(e.message);

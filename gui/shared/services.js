@@ -159,10 +159,10 @@ angular.module('ndslabs-services', [ 'ndslabs-api' ])
 
   var service = {
     // Unused, very noisy
-    /*debug: function() {
+    debug: function() {
       self.type = 'debug';
       log.apply(self, arguments);
-    },*/
+    },
     error: function() {
       self.type = 'error';
       log.apply(self, arguments);
