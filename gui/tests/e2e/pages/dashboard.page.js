@@ -12,7 +12,7 @@ var TEST_USERNAME = shared.config.TEST_USERNAME;
 var TEST_PASSWORD = shared.config.TEST_PASSWORD;
 
 var PAGE_TITLE = 'Labs Workbench Dashboard';
-var PAGE_ROUTE = /https?\:\/\/.+\/dashboard\/\#?\/?home(\?t=.+|expand=.)?/;
+var PAGE_ROUTE = /https?\:\/\/.+\/dashboard\/\#?\/?home\/?(\?t=.+|\?expand=.|\?quickstart=.)?/;
 
 var EC = protractor.ExpectedConditions;
 
@@ -95,15 +95,17 @@ DashboardPage.prototype.get = function(loggedIn) {
     loginPage.loginBtn.click();
   }
 
+  navbar.clickApplicationsNav();
+
   browser.waitForAngular();
   this.verify();
 };
 
 // Ensure we are on the dashboard page
 DashboardPage.prototype.verify = function() {
-  "use strict";
+  "use strict";  
 
-  browser.waitForAngular();
+  //browser.waitForAngular();
   expect(browser.getCurrentUrl()).toMatch(PAGE_ROUTE);
   expect(browser.getTitle()).toEqual(PAGE_TITLE);
 };

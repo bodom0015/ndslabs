@@ -7,7 +7,7 @@ var shared = require('./pages/shared.page.js');
 var Navbar = require('./pages/navbar.page.js');
 var LoginPage = require('./pages/login.page.js');
 var LandingPage = require('./pages/landing.page.js');
-var DashboardPage = require('./pages/dashboard.page.js');
+var CatalogPage = require('./pages/catalog.page.js');
 var ResetPasswordPage = require('./pages/reset.page.js');
 var SignUpPage = require('./pages/signup.page.js');
 
@@ -23,7 +23,7 @@ describe('Labs Workbench Login View', function() {
   var loginPage = new LoginPage();
   var signUpPage = new SignUpPage();
   var resetPasswordPage = new ResetPasswordPage();
-  var dashboardPage = new DashboardPage();
+  var catalogPage = new CatalogPage();
   var landingPage = new LandingPage();
   
   beforeAll(function() { helpers.beforeAll(); });
@@ -54,13 +54,13 @@ describe('Labs Workbench Login View', function() {
     loginPage.enterPassword(TEST_VALID_PASSWORD);
     loginPage.clickLogin();
     
-    // We should be taken to the Dashboard View
-    dashboardPage.verify();
+    // We should be taken to the Catalog View
+    catalogPage.verify();
     
     // Log out to reset test state
     navbar.expandAccountDropdown();
     navbar.clickSignOut();
-    loginPage.verify();
+    landingPage.verify();
   });
   
   it('should link to the Reset Password view', function() {

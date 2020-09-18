@@ -27,7 +27,7 @@ const port = 3000;
 
 // Build up a Workbench API URL
 const apiProtocol = 'http:'; // HTTP, since this isn't going through the loadbalancer
-const apiHost = process.env.NDSLABS_APISERVER_SERVICE_HOST || 'localhost';
+const apiHost = process.env.NDSLABS_APISERVER_SERVICE_HOST || 'www.local.ndslabs.org';
 const apiPort = process.env.NDSLABS_APISERVER_SERVICE_PORT || '30001';
 const apiPath = '/api';
 let apiBase = apiProtocol + '//' + apiHost;

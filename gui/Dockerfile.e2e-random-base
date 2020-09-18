@@ -1,0 +1,32 @@
+FROM yukinying/chrome-headless-browser
+
+USER root
+
+RUN mv /etc/sudoers /etc/sudoers.bak && \
+    cat /etc/sudoers.bak
+
+# Install NodeJS 8 LTS
+RUN apt-get -qq update && \
+    apt-get -qq install \
+      git \
+      vim \
+      curl \
+      sudo && \
+    curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
+    apt-get -qq install nodejs && \
+    apt-get -qq remove curl && \
+    apt-get -qq clean all && \
+    apt-get -qq autoclean && \
+    apt-get -qq autoremove
+
+USER headless
+WORKDIR /home/headless
+COPY package.json .
+RUN npm install
+
+RUN node_modules/protractor/bin/webdriver-manager update
+
+COPY . .
+
+ENTRYPOINT [ "node_modules/protractor/bin/protractor" ]
+CMD [ "" ]

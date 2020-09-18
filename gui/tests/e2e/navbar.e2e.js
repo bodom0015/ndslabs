@@ -46,6 +46,7 @@ describe('Labs Workbench Navbar', function() {
     landingPage.verify();
   });
   
+/*
   it('should link to the Feature Overview wiki page', function(done) {
     navbar.expandHelpDropdown();
     navbar.clickHelpLink(0);
@@ -90,7 +91,7 @@ describe('Labs Workbench Navbar', function() {
       done();
     });
   }, TIMEOUT_EXPECT_NEW_TAB);
-  
+  */
   it('should link to the api reference view', function() {
     navbar.expandHelpDropdown();
     navbar.clickApiReferenceNav();
@@ -121,7 +122,7 @@ describe('Labs Workbench Navbar', function() {
     afterAll(function() {
       navbar.expandAccountDropdown();
       navbar.clickSignOut();
-      loginPage.verify();
+      landingPage.verify();
     });
     
     it('should link back to the landing page', function() {
@@ -130,7 +131,7 @@ describe('Labs Workbench Navbar', function() {
       //browser.waitForAngular();
       landingPage.verify();
     });
-  
+  /*
     it('should link to the Feature Overview wiki page', function(done) {
       navbar.expandHelpDropdown();
       navbar.clickHelpLink(0);
@@ -175,7 +176,7 @@ describe('Labs Workbench Navbar', function() {
         done();
       });
     }, TIMEOUT_EXPECT_NEW_TAB);
-    
+    */
     it('should link to the api reference view', function() {
       navbar.expandHelpDropdown();
       navbar.clickApiReferenceNav();
@@ -215,7 +216,7 @@ describe('Labs Workbench Navbar', function() {
     it('should allow the user to sign out', function() {
       navbar.expandAccountDropdown();
       navbar.clickSignOut();
-      loginPage.verify();
+      landingPage.verify();
       
       // Log back in to reset test state
       dashboardPage.get();

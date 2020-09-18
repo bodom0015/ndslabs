@@ -7,6 +7,7 @@ var helpers = require('./helpers.e2e.js');
 var Navbar = require('./pages/navbar.page.js');
 var LoginPage = require('./pages/login.page.js');
 var DashboardPage = require('./pages/dashboard.page.js');
+var CatalogPage = require('./pages/catalog.page.js');
 var ResetPasswordPage = require('./pages/reset.page.js');
 var LandingPage = require('./pages/landing.page.js');
 
@@ -25,6 +26,7 @@ describe('Labs Workbench Reset Password View', function() {
   var landingPage = new LandingPage();
   var loginPage = new LoginPage();
   var dashboardPage = new DashboardPage();
+  var catalogPage = new CatalogPage();
   var resetPasswordPage = new ResetPasswordPage();
 
   var loggedIn = false;
@@ -99,7 +101,7 @@ describe('Labs Workbench Reset Password View', function() {
       navbar.logoutBtn.click();
       
       // Bug? See NDS-638
-      loginPage.verify();
+      landingPage.verify();
       
       loggedIn = false;
     });
@@ -125,13 +127,13 @@ describe('Labs Workbench Reset Password View', function() {
       // Log out to reset test state
       navbar.accountDropdown.click();
       navbar.logoutBtn.click();
-      loginPage.verify();
+      landingPage.verify();
       
       // Log in again to ensure password actually changed
       loginPage.usernameInput.sendKeys(TEST_VALID_USERNAME);
       loginPage.passwordInput.sendKeys(TEST_NEW_PASSWORD);
       loginPage.loginBtn.click();
-      dashboardPage.verify();
+      catalogPage.verify();
       
       // Ensure we are on the ResetPassword view
       resetPasswordPage.get(true);
@@ -150,14 +152,14 @@ describe('Labs Workbench Reset Password View', function() {
       navbar.accountDropdown.click();
       navbar.logoutBtn.click();
       browser.waitForAngular();
-      loginPage.verify();
+      landingPage.verify();
 
       // Log in again to ensure password actually changed
       loginPage.usernameInput.sendKeys(TEST_VALID_USERNAME);
       loginPage.passwordInput.sendKeys(TEST_ORIGINAL_PASSWORD);
       loginPage.loginBtn.click();
       browser.waitForAngular();
-      dashboardPage.verify();
+      catalogPage.verify();
     });
     
     it('should prohibit passwords less than 6 characters', function() {

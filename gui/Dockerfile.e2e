@@ -1,0 +1,58 @@
+FROM ndslabs/angular-ui:latest
+
+# Install Chromium Dependencies
+RUN apt-get -qq update && \
+    apt-get -qq install \
+      fonts-liberation \
+      libappindicator1 \
+      libasound2 \
+      libatk-bridge2.0-0 \
+      libatk1.0-0 \
+      libcairo2 \
+      libcups2 \
+      libdbus-1-3 \
+      libgdk-pixbuf2.0-0 \
+      libgtk-3-0 \
+      libnspr4 \
+      libnss3 \
+      libx11-xcb1 \
+      libxss1 \
+      xdg-utils \
+      wget && \
+    apt-get -qq clean all && \
+    apt-get -qq autoclean && \
+    apt-get -qq autoremove
+
+# Install Chromium (Beta Channel)
+COPY google-chrome-beta_current_amd64.deb . 
+RUN dpkg -i google-chrome-beta_current_amd64.deb && \
+    apt-get -qq install -f && \
+    apt-get -qq clean all && \
+    apt-get -qq autoclean && \
+    apt-get -qq autoremove
+
+# Change to development mode
+ENV NODE_ENV="development"
+
+# Install dev dependencies
+RUN npm install
+
+#RUN apt-get -qq update && \
+#    apt-get -qq install software-properties-common && \
+#    add-apt-repository ppa:chromium-daily/dev && \
+#    apt-get -qq update && \
+#    apt-get -qq install chromium-browser && \
+#    apt-get -qq remove software-properties-common && \
+#    apt-get -qq clean all && \
+#    apt-get -qq autoclean && \
+#    apt-get -qq autoremove
+
+ENV SUITES="landing,help,swagger,signup,login,recovery,catalog,addSpec,editSpec,dashboard,addService,editService,console"
+
+# Install Selenium Webdrivers
+RUN node_modules/protractor/bin/webdriver-manager update
+
+COPY protractor.auth.json .
+
+ENTRYPOINT [ "bash" ]
+CMD [ "-c", "node_modules/protractor/bin/webdriver-manager update && node_modules/protractor/bin/protractor" ]

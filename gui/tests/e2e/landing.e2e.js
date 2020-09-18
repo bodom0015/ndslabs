@@ -47,7 +47,7 @@ describe('Labs Workbench Landing Page View', function() {
     });
   }, TIMEOUT_EXPECT_NEW_TAB);
   
-  it('should offer sign-up', function() {
+/**  it('should offer sign-up', function() {
     landingPage.clickSignUp();
     
     // We should be taken to the Sign Up View
@@ -109,6 +109,8 @@ describe('Labs Workbench Landing Page View', function() {
       contactUsPage.verify();
     });
   });
+
+*/
   
   describe('Landing Page View while Signed In', function() {
     beforeAll(function() {
@@ -118,7 +120,7 @@ describe('Labs Workbench Landing Page View', function() {
     afterAll(function() {
       navbar.expandAccountDropdown();
       navbar.clickSignOut();
-      loginPage.verify();
+      landingPage.verify();
     });
       
     it('should link user to dashboard', function() {

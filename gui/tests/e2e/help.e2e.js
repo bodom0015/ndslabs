@@ -8,6 +8,7 @@ var Navbar = require('./pages/navbar.page.js');
 var ContactUsPage = require('./pages/help.page.js');
 var DashboardPage = require('./pages/dashboard.page.js');
 var LoginPage = require('./pages/login.page.js');
+var LandingPage = require('./pages/landing.page.js');
 
 var TIMEOUT_EXPECT_NEW_TAB = 30000;
 
@@ -29,6 +30,7 @@ describe('Labs Workbench Contact Us View', function() {
   var contactUsPage = new ContactUsPage();
   var dashboardPage = new DashboardPage();
   var loginPage = new LoginPage();
+  var landingPage = new LandingPage();
   
   beforeAll(function() { 
     helpers.beforeAll();
@@ -76,7 +78,7 @@ describe('Labs Workbench Contact Us View', function() {
     afterAll(function() {
       navbar.expandAccountDropdown();
       navbar.clickSignOut();
-      loginPage.verify();
+      landingPage.verify();
     });
     
     it('should link to the support forum', function(done) {
