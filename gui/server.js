@@ -28,7 +28,7 @@ const port = 3000;
 // Build up a Workbench API URL
 const apiProtocol = 'http:'; // HTTP, since this isn't going through the loadbalancer
 const apiHost = process.env.NDSLABS_APISERVER_SERVICE_HOST || 'localhost';
-const apiPort = process.env.NDSLABS_APISERVER_SERVICE_PORT || '';
+const apiPort = process.env.NDSLABS_APISERVER_SERVICE_PORT || '30001';
 const apiPath = '/api';
 let apiBase = apiProtocol + '//' + apiHost;
 if (apiPort) { apiBase += ':' + apiPort }
@@ -51,7 +51,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // AngularJS app dependencies
-app.use('/bower_components', express.static('bower_components'));
+app.use('/node_modules', express.static('node_modules'));
 
 // Our AngularJS apps/assets
 app.use('/app', express.static('app'));
